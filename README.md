@@ -1,10 +1,27 @@
+<div align="center">
+
 # Selenium Automation Suite
 
-Java UI automation examples using **Selenium 4.49**, **JUnit 5**, **TestNG** and **Cucumber** in one Maven reactor.
+**A modular Java framework for reliable web UI and end-to-end test automation.**
 
-[![Build and browser smoke](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml)
-[![Java 21](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+Reusable Selenium browser setup, page objects, explicit waits and test lifecycle utilities are demonstrated across JUnit 5, TestNG and Cucumber. The repository contains runnable examples against public demo applications, plus an isolated browser smoke test that works without any external application account.
+
+[![Build and browser smoke](https://img.shields.io/github/actions/workflow/status/cihat-kose/selenium-automation-suite/ci.yml?branch=master&label=build&logo=github)](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml)
+[![Java](https://img.shields.io/badge/Java-21%2B-ED8B00?logo=openjdk&logoColor=white)](https://adoptium.net/)
+[![Selenium](https://img.shields.io/badge/Selenium-4.49-43B02A?logo=selenium&logoColor=white)](https://www.selenium.dev/)
+[![JUnit 5](https://img.shields.io/badge/JUnit-5-25A162?logo=junit5&logoColor=white)](https://junit.org/junit5/)
+[![TestNG](https://img.shields.io/badge/TestNG-7.10-FF7300)](https://testng.org/)
+[![Cucumber](https://img.shields.io/badge/Cucumber-7-23D96C?logo=cucumber&logoColor=white)](https://cucumber.io/)
+[![Maven](https://img.shields.io/badge/Maven-Wrapper-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org/wrapper/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+</div>
+
+## What is this repository?
+
+This is a learning-friendly but runnable Selenium automation suite. It shows how to organize several UI automation styles in one Maven project, share browser infrastructure between modules, generate test reports and run the same suite locally or in GitHub Actions. It is useful as a starter framework, a reference project for automation patterns and a place to experiment with JUnit, TestNG and BDD-style Cucumber scenarios.
+
+The tests cover registration, login, negative authentication, shopping cart flows, payment validation, bill payment and admin workflows on public demo sites. Public demo sites can change or block automation, so the repository separates environment-dependent E2E checks from the deterministic local browser smoke test.
 
 ## Quick start
 
