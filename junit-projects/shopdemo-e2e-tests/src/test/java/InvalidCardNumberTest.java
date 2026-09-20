@@ -10,7 +10,7 @@ public class InvalidCardNumberTest extends BaseDriver {
 
     @Test
     public void verifyInvalidCardNumber() {
-        driver.get("https://shopdemo.e-junkie.com/");
+        driver.get(System.getProperty("shopdemo.url", "https://shopdemo.e-junkie.com/"));
 
         WebElement eBook = driver.findElement(By.linkText("Ebook"));
         eBook.click();
@@ -33,8 +33,8 @@ public class InvalidCardNumberTest extends BaseDriver {
         driver.switchTo().parentFrame();
         WebElement errorMsg = driver.findElement(By.xpath("//*[@id='SnackBar']"));
 
-        assertEquals("Kart numaranız geçersiz.", errorMsg.getText());
+        assertEquals("Your card number is invalid.", errorMsg.getText());
 
-        waitAndClose();
+
     }
 }

@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      selenium:
+        patterns: ['org.seleniumhq.selenium:*']
+      cucumber:
+        patterns: ['io.cucumber:*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

@@ -10,7 +10,7 @@ public class ContactFormTest extends BaseDriver {
 
     @Test
     public void verifyContactForm() {
-        driver.get("https://shopdemo.e-junkie.com/");
+        driver.get(System.getProperty("shopdemo.url", "https://shopdemo.e-junkie.com/"));
 
         WebElement contactUs = driver.findElement(By.xpath("//a[@class='contact']"));
         contactUs.click();
@@ -33,6 +33,6 @@ public class ContactFormTest extends BaseDriver {
         assertEquals("Recaptcha didn't match", wait.until(ExpectedConditions.alertIsPresent()).getText());
         driver.switchTo().alert().accept();
 
-        waitAndClose();
+
     }
 }

@@ -51,7 +51,7 @@ public class AdminPageElements {
     @FindBy(xpath = "//button[@name='save']")
     public WebElement saveButton;
 
-    @FindBy(xpath = "//div[@class='alert alert-success alert-dismissable']")
+    @FindBy(css = ".alert-success")
     public WebElement successMessage;
 
     @FindBy(xpath = "//button[@class='btn btn-danger float-right']")

@@ -10,11 +10,6 @@ import java.util.List;
 public class _03_BillPaySteps {
     Locaters loc = new Locaters();
 
-    @When("Enter your valid username and valid password")
-    public void enterYourValidUsernameAndValidPassword() {
-        loc.sendKeysFunction(loc.loginUsername,"Kerem");
-        loc.sendKeysFunction(loc.loginPassword,"password");
-    }
     @And("Click bill pay link")
     public void clickBillPayLink() {
         loc.clickFunction(loc.billPayLink);

@@ -1,151 +1,111 @@
 # Selenium Automation Suite
 
-![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
-![Cucumber](https://img.shields.io/badge/Cucumber-23D96C?style=for-the-badge&logo=cucumber&logoColor=white)
-![TestNG](https://img.shields.io/badge/TestNG-FF7300?style=for-the-badge&logo=testng&logoColor=white)
-![JUnit](https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
-![Apache POI](https://img.shields.io/badge/Apache%20POI-231F20?style=for-the-badge&logo=apache&logoColor=white)
+Java UI automation examples using **Selenium 4.49**, **JUnit 5**, **TestNG** and **Cucumber** in one Maven reactor.
 
----
+[![Build and browser smoke](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml)
+[![Java 21](https://img.shields.io/badge/Java-21-orange)](https://adoptium.net/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## Project Overview
+## Quick start
 
-Selenium Automation Suite is a comprehensive modular testing framework designed to automate UI and backend testing for web applications. It integrates **Cucumber**, **JUnit**, **TestNG**, and **Selenium** to facilitate Behavior Driven Development (BDD), end-to-end testing, and parallel test execution.
+Install **JDK 21 or newer** and **Google Chrome**. Maven is provided by the wrapper; a separate Maven installation is unnecessary. The first run needs internet access to download Maven, dependencies and the browser driver.
 
----
-
-## Project Structure
-```
-selenium-automation-suite/
-│
-├── .idea/                              # IntelliJ IDEA project files
-├── common/                             # Shared utility modules
-│
-├── cucumber-projects/                  # Cucumber-based projects
-│   └── parabank-cucumber-tests/        # ParaBank Cucumber tests
-│       ├── src/                        # Source code
-│       ├── target/                     # Build output
-│       └── pom.xml                     # Maven configuration file
-│
-├── junit-projects/                     # JUnit-based projects
-│   ├── demowebshop-e2e-tests/          # DemoWebShop end-to-end tests
-│   ├── itera-tests/                    # Itera test scenarios
-│   ├── itera-tests-xpath/              # XPath-based Itera tests
-│   └── shopdemo-e2e-tests/             # ShopDemo tests
-│       └── pom.xml                     # Maven configuration file
-│
-├── testng-projects/                    # TestNG-based projects
-│   ├── demowebshop-e2e-tests-testng/   # TestNG DemoWebShop tests
-│   └── nopcommerce-admin-testng/       # NopCommerce admin tests
-│       ├── src/                        # Source code
-│       ├── target/                     # Build output
-│       └── pom.xml                     # Maven configuration file
-│
-├── .gitignore                          # Git ignore file
-└── pom.xml                             # Parent Maven configuration file
-```
-
----
-
-## Projects
-### 1. Cucumber Projects
-**parabank-cucumber-tests**
-- Automated test suite for the ParaBank application.
-- Utilizes Cucumber, Selenium, and TestNG.
-- Includes feature files and step definitions in `src/test/java`.
-
-### 2. JUnit Projects
-- **demowebshop-e2e-tests** – End-to-end tests for DemoWebShop.
-- **itera-tests** – Itera test scenarios.
-- **itera-tests-xpath** – XPath-based Itera tests.
-- **shopdemo-e2e-tests** – End-to-end tests for ShopDemo application.
-
-### 3. TestNG Projects
-- **demowebshop-e2e-tests-testng** – TestNG tests for DemoWebShop.
-- **nopcommerce-admin-testng** – Admin panel tests for NopCommerce.
-
----
-
-## Installation
-### Clone the Repository
-```bash
+```sh
 git clone https://github.com/cihat-kose/selenium-automation-suite.git
 cd selenium-automation-suite
 ```
 
-### Open in IntelliJ IDEA
-1. **File -> New -> Project from Existing Sources**
-2. Select the `pom.xml` file. Maven will automatically import dependencies.
+Compile every module and run the isolated browser smoke tests:
 
----
-
-## Dependencies
-Main dependencies required for the project:
-- **Selenium** – UI automation
-- **Cucumber** – BDD testing
-- **TestNG** – Test organization and execution
-- **JUnit** – Unit testing framework
-- **Extent Reports** – HTML and PDF test reports
-- **Apache POI** – Excel file processing
-- **Commons IO** – File handling utilities
-
-Dependencies are managed via the `pom.xml` file in each module.
-
----
-
-## Running Tests
-### Run All Tests
-```bash
-mvn clean test
+```powershell
+# Windows PowerShell
+.\mvnw.cmd -B -ntp clean verify "-Dtest=DriverSmokeTest" "-Dsurefire.failIfNoSpecifiedTests=false"
 ```
 
-### Run Specific Module
-```bash
-cd cucumber-projects/parabank-cucumber-tests
-mvn clean test
+```sh
+# Linux / macOS
+bash mvnw -B -ntp clean verify -Dtest=DriverSmokeTest -Dsurefire.failIfNoSpecifiedTests=false
 ```
 
-### Run with Profiles
-```bash
-mvn clean test -PRegression
+This opens a headless browser, submits a local HTML form and verifies the asynchronous result. It does **not** claim that public demo E2E tests passed. The command compiles every suite and runs the two tests in `common`; modules without this test class are intentionally not selected.
+
+## Suites
+
+| Module | Framework | Coverage |
+| --- | --- | --- |
+| `common` | JUnit 5 | Shared browser factory and isolated browser smoke |
+| `demowebshop-e2e-tests` | JUnit 5 | Registration, duplicate email, login, rejected credentials, cart |
+| `demowebshop-e2e-tests-testng` | TestNG | Registration, login and checkout workflow |
+| `parabank-cucumber-tests` | Cucumber + TestNG | Registration, login, rejected credentials and bill payment |
+| `shopdemo-e2e-tests` | JUnit 5 | Contact validation, promo/payment errors and CAPTCHA rejection |
+| `nopcommerce-admin-testng` | TestNG | Admin login, navigation and customer creation |
+| `itera-tests` | JUnit 5 | Registration, login and customer creation with mixed locators |
+| `itera-tests-xpath` | JUnit 5 | The same Itera exercises using XPath |
+
+**Live demo availability is separate from build health.** On 2026-09-20, Itera returned `ERR_NAME_NOT_RESOLVED` and the NopCommerce admin demo presented a Cloudflare verification page in both Chrome and Edge. Its exercises remain available for a compatible restored environment using `-Ditera.url=...`. See [validation results](docs/VALIDATION.md) for the actual results and remaining blockers.
+
+## Run live E2E tests
+
+Run commands from the repository root. `-am` builds the shared module and parent projects too. Replace `bash mvnw` with `.\mvnw.cmd` on Windows.
+
+```sh
+# One complete suite
+bash mvnw -B -ntp -pl :demowebshop-e2e-tests -am test
+
+# All suites, continuing across independent module failures
+bash mvnw -B -ntp -fae verify
+
+# Cucumber smoke: registration and successful login
+bash mvnw -B -ntp -pl :parabank-cucumber-tests -am test -PSmoke
+
+# All Cucumber scenarios, executed once
+bash mvnw -B -ntp -pl :parabank-cucumber-tests -am test -PRegression
+
+# Show the browser, or choose another installed browser
+bash mvnw -pl :common test -Dheadless=false
+bash mvnw -pl :common test -Dbrowser=firefox
 ```
 
----
+The default `test`/`verify` command runs the live suites as well as smoke tests. Unavailable sites cause failures, not silent skips. Public demos may reset data, change their UI, enforce CAPTCHA or be offline. Use dedicated authorized test environments for dependable E2E pipelines.
 
-## Reporting
-- Test reports are generated in the `test-output` and `testReports` folders.
-- HTML reports are located in `SparkReport`.
-- PDF reports are generated as `PdfReport.pdf`.
+### Configuration
 
----
+Pass options as Maven system properties (`-Dname=value`). Quote the whole option in PowerShell when it contains periods or special characters.
 
-## Contributing
-Contributions are welcome!
-1. Fork the repository.
-2. Create a new branch:
-```bash
-git checkout -b new-feature
+| Property | Default / purpose |
+| --- | --- |
+| `browser` | `chrome`; also supports `firefox` and `edge` |
+| `headless` | `true`; set `false` for a visible browser |
+| `demowebshop.url` | `https://demowebshop.tricentis.com/` |
+| `parabank.url` | `https://parabank.parasoft.com/parabank/index.htm` |
+| `shopdemo.url` | `https://shopdemo.e-junkie.com/` |
+| `nopcommerce.url` | `https://admin-demo.nopcommerce.com/login?` |
+| `itera.url` | `https://itera-qa.azurewebsites.net/` |
+| `cucumber.filter.tags` | Select scenarios, e.g. `@smoke` |
+
+Browser sessions close in framework teardown, including failed tests. JUnit tests use one session per test, TestNG workflows use one per class, and Cucumber uses one per scenario. Run the stateful TestNG checkout class as a complete suite; its dependencies are explicit. No parallel execution is enabled by default.
+
+## Reports and GitHub Actions
+
+- Every module writes XML/text reports to `target/surefire-reports/`.
+- ParaBank additionally produces `target/cucumber-report.html` and `target/cucumber.json`, with screenshots attached on scenario failure.
+- **Build and browser smoke** runs on pushes and pull requests: all-module compilation plus isolated browser smoke.
+- **Live demo E2E** is manually dispatched from the Actions tab with a selected module. It reports real failures and uploads results even when the run fails.
+- Dependabot checks Maven dependencies and Actions monthly.
+
+Generated reports stay out of Git. The ShopDemo CAPTCHA test verifies rejection; it does not place or claim a successful order.
+
+## Repository layout
+
+```text
+common/                Shared Selenium driver factory and browser smoke
+junit-projects/        Four JUnit suites
+testng-projects/       Two TestNG suites
+cucumber-projects/     ParaBank features, steps and runners
+.github/workflows/     Build/smoke and optional live E2E workflows
+docs/                  Validation evidence and known limitations
 ```
-3. Commit your changes:
-```bash
-git commit -m "Add new feature"
-```
-4. Push to the branch:
-```bash
-git push origin new-feature
-```
-5. Open a Pull Request.
 
----
+Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). License: [MIT](LICENSE).
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## Contact
-For any inquiries or issues, please open an issue in this repository.
-
+Implementation references: [Maven Wrapper](https://maven.apache.org/tools/wrapper/), [Selenium browser options](https://www.selenium.dev/documentation/webdriver/drivers/options/).

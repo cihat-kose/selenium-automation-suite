@@ -11,10 +11,11 @@ import java.time.Duration;
 public class RegistrationAndOrderTests extends BaseDriver {
 
     private Actions actions;
+    private final String email = "suite-" + java.util.UUID.randomUUID() + "@example.com";
 
     @BeforeEach
     public void setup() {
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
         actions = new Actions(driver);
     }
 
@@ -23,10 +24,10 @@ public class RegistrationAndOrderTests extends BaseDriver {
     public void registerSuccessfully() {
 
         WebElement register = driver.findElement(By.linkText("Register"));
-        actions.moveToElement(register).click().perform();
+        register.click();
 
         WebElement gender = driver.findElement(By.id("gender-male"));
-        actions.moveToElement(gender).click().perform();
+        gender.click();
 
         WebElement firstName = driver.findElement(By.id("FirstName"));
         actions.moveToElement(firstName).click().sendKeys("Name").perform();
@@ -35,7 +36,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
         actions.moveToElement(lastName).click().sendKeys("Surname").perform();
 
         WebElement eMail = driver.findElement(By.id("Email"));
-        actions.moveToElement(eMail).click().sendKeys("testing" + ((int) (Math.random() * 10000)) + "@testing.com").perform();
+        actions.moveToElement(eMail).click().sendKeys(email).perform();
 
         WebElement password = driver.findElement(By.id("Password"));
         actions.moveToElement(password).click().sendKeys("password").perform();
@@ -44,24 +45,25 @@ public class RegistrationAndOrderTests extends BaseDriver {
         actions.moveToElement(confirmPassword).click().sendKeys("password").perform();
 
         WebElement registerButton = driver.findElement(By.id("register-button"));
-        actions.moveToElement(registerButton).click().perform();
+        registerButton.click();
 
         WebElement confirmation = driver.findElement(By.className("result"));
         Assertions.assertEquals("Your registration completed", confirmation.getText());
 
         WebElement logout = driver.findElement(By.linkText("Log out"));
-        actions.moveToElement(logout).click().perform();
+        logout.click();
     }
 
     @Test
     @Order(2)
     public void registerWithExistingEmail() {
+        registerSuccessfully();
 
         WebElement register = driver.findElement(By.linkText("Register"));
-        actions.moveToElement(register).click().perform();
+        register.click();
 
         WebElement gender = driver.findElement(By.id("gender-male"));
-        actions.moveToElement(gender).click().perform();
+        gender.click();
 
         WebElement firstName = driver.findElement(By.id("FirstName"));
         actions.moveToElement(firstName).click().sendKeys("Name").perform();
@@ -70,7 +72,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
         actions.moveToElement(lastName).click().sendKeys("Surname").perform();
 
         WebElement eMail = driver.findElement(By.id("Email"));
-        actions.moveToElement(eMail).click().sendKeys("testing@testing.com").perform();
+        actions.moveToElement(eMail).click().sendKeys(email).perform();
 
         WebElement password = driver.findElement(By.id("Password"));
         actions.moveToElement(password).click().sendKeys("password").perform();
@@ -79,7 +81,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
         actions.moveToElement(confirmPassword).click().sendKeys("password").perform();
 
         WebElement registerButton = driver.findElement(By.id("register-button"));
-        actions.moveToElement(registerButton).click().perform();
+        registerButton.click();
 
         WebElement confirmation = driver.findElement(By.xpath("//li[text()='The specified email already exists']"));
         Assertions.assertEquals("The specified email already exists", confirmation.getText());
@@ -88,23 +90,24 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test
     @Order(3)
     public void loginSuccessfully() {
+        registerSuccessfully();
 
         WebElement login = driver.findElement(By.linkText("Log in"));
-        actions.moveToElement(login).click().perform();
+        login.click();
 
         WebElement eMail = driver.findElement(By.id("Email"));
-        actions.moveToElement(eMail).click().sendKeys("testing8567@testing.com").perform();
+        actions.moveToElement(eMail).click().sendKeys(email).perform();
 
         WebElement password = driver.findElement(By.id("Password"));
         actions.moveToElement(password).click().sendKeys("password").perform();
 
         WebElement loginButton = driver.findElement(By.xpath("//input[@class='button-1 login-button']"));
-        actions.moveToElement(loginButton).click().perform();
+        loginButton.click();
 
         WebElement logout = driver.findElement(By.linkText("Log out"));
         Assertions.assertTrue(logout.isDisplayed());
 
-        actions.moveToElement(logout).click().perform();
+        logout.click();
     }
 
     @Test
@@ -112,7 +115,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     public void loginWithInvalidCredentials() {
 
         WebElement login = driver.findElement(By.linkText("Log in"));
-        actions.moveToElement(login).click().perform();
+        login.click();
 
         WebElement eMail = driver.findElement(By.id("Email"));
         actions.moveToElement(eMail).click().sendKeys("wrong" + ((int) (Math.random() * 10000)) + "@testing.com").perform();
@@ -121,7 +124,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
         actions.moveToElement(password).click().sendKeys("wrongpass").perform();
 
         WebElement loginButton = driver.findElement(By.xpath("//input[@class='button-1 login-button']"));
-        actions.moveToElement(loginButton).click().perform();
+        loginButton.click();
 
         WebElement confirmation = driver.findElement(By.xpath("//span[text()='Login was unsuccessful. Please correct the errors and try again.']"));
         Assertions.assertEquals("Login was unsuccessful. Please correct the errors and try again.", confirmation.getText());
@@ -129,33 +132,36 @@ public class RegistrationAndOrderTests extends BaseDriver {
 
     @Test
     @Order(5)
-    public void placeOrder() {
+    public void addLaptopToCart() {
+        registerSuccessfully();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
         WebElement login = driver.findElement(By.linkText("Log in"));
-        actions.moveToElement(login).click().perform();
+        login.click();
 
         WebElement eMail = driver.findElement(By.id("Email"));
-        actions.moveToElement(eMail).click().sendKeys("testing8567@testing.com").perform();
+        actions.moveToElement(eMail).click().sendKeys(email).perform();
 
         WebElement password = driver.findElement(By.id("Password"));
         actions.moveToElement(password).click().sendKeys("password").perform();
 
         WebElement loginButton = driver.findElement(By.xpath("//input[@class='button-1 login-button']"));
-        actions.moveToElement(loginButton).click().perform();
+        loginButton.click();
+
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated(By.linkText("Log out")));
 
         WebElement computers = driver.findElement(By.linkText("COMPUTERS"));
         actions.moveToElement(computers).perform();
 
         WebElement notebooks = driver.findElement(By.linkText("Notebooks"));
-        actions.moveToElement(notebooks).click().perform();
+        notebooks.click();
 
         WebElement product = driver.findElement(By.xpath("(//div[@class='details']//a)[1]"));
-        actions.moveToElement(product).click().perform();
+        product.click();
 
         WebElement addToCart = driver.findElement(By.id("add-to-cart-button-31"));
-        actions.moveToElement(addToCart).click().perform();
+        addToCart.click();
 
         WebElement confirmation = driver.findElement(By.xpath("//p[contains(text(),'The product has been added to your')]"));
         Assertions.assertTrue(confirmation.getText().contains("The product has been added to your"));

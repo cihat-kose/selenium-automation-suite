@@ -37,3 +37,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+# Local tools and generated reports
+.tools/
+**/test-output/
+**/testReports/
+**/SparkReport/
+**/PdfReport.pdf
+*.log

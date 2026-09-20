@@ -10,7 +10,7 @@ public class InvalidPromoCodeTest extends BaseDriver {
 
     @Test
     public void verifyInvalidPromoCode() {
-        driver.get("https://shopdemo.e-junkie.com/");
+        driver.get(System.getProperty("shopdemo.url", "https://shopdemo.e-junkie.com/"));
 
         WebElement eBook = driver.findElement(By.linkText("Ebook"));
         eBook.click();
@@ -33,6 +33,6 @@ public class InvalidPromoCodeTest extends BaseDriver {
         WebElement errorMessage = driver.findElement(By.xpath("//span[text()='Invalid promo code']"));
         assertEquals("Invalid promo code", errorMessage.getText());
 
-        waitAndClose();
+
     }
 }

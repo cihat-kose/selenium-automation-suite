@@ -4,9 +4,9 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
-        features = {"src/test/java/featureFiles/_02_Login.feature"},
+        features = {"classpath:features/_02_Login.feature"},
         glue = {"stepDefinitions"},
-        plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
+        plugin = {"pretty", "html:target/cucumber-report.html", "json:target/cucumber.json"}
 )
 
 public class TestRunnerLoginSteps extends AbstractTestNGCucumberTests {
