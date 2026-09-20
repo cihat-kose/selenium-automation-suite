@@ -1,195 +1,64 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.selenium</groupId>
+    <parent>
+        <groupId>com.selenium</groupId>
+        <artifactId>cucumber-projects</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>parabank-cucumber-tests</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>ParaBank Cucumber Project</name>
-
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <argLine>-Duser.language=en</argLine>
+        <cucumber.filter.tags>not @disabled</cucumber.filter.tags>
     </properties>
-
-    <!-- Dependencies -->
     <dependencies>
-        <!-- Selenium WebDriver library for browser automation -->
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.25.0</version>
+            <groupId>com.selenium</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
-        <!-- Cucumber library for writing feature files in Gherkin syntax (used in Java) -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.11.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Cucumber TestNG integration for running Cucumber tests within the TestNG framework -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
-            <version>7.11.0</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- TestNG library for organizing and managing test cases -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.10.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- SLF4J API for logging (API only, requires implementation) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.16</version>
-        </dependency>
-
-        <!-- SLF4J Simple Logger for simple, console-based logging (used during testing) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.16</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Log4j dependencies for logging configuration -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-
-        <!-- Apache Commons IO for file handling utilities like FileUtils -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.14.0</version>
-        </dependency>
-
-        <!-- Apache Commons Lang for utilities to handle core Java functionalities (e.g., String manipulation) -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
-        </dependency>
-
-        <!-- ExtentReports adapter for Cucumber 7 to generate rich test reports -->
-        <dependency>
-            <groupId>tech.grasshopper</groupId>
-            <artifactId>extentreports-cucumber7-adapter</artifactId>
-            <version>1.14.0</version>
-        </dependency>
-
-        <!-- MySQL JDBC driver for database connection and interaction with MySQL databases -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.10.2</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <!-- Plugin configuration where we determine where Jenkins' run command will execute -->
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M1</version>
                 <configuration>
-
-                    <includes>
-                        <!-- Tüm TestRunner dosyalarını çalıştır -->
-                        <include>**/runners/TestRunner*.java</include>
-                    </includes>
-
-                    <!-- Testlerin konsolda detaylı raporlanması -->
                     <systemPropertyVariables>
-                        <cucumber.plugin>pretty, html:target/cucumber-reports.html</cucumber.plugin>
+                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
                     </systemPropertyVariables>
-
+                    <includes combine.self="override">
+                        <include>**/TestRunnerAll.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
     <profiles>
-        <!-- Smoke Test Profili -->
         <profile>
             <id>Smoke</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M1</version>
-                        <configuration>
-
-                            <includes>
-                                <include>**/runners/TestRunnerAll.java</include>
-                            </includes>
-
-                            <systemPropertyVariables>
-                                <cucumber.plugin>pretty, html:target/cucumber-smoke-report.html</cucumber.plugin>
-                            </systemPropertyVariables>
-
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <cucumber.filter.tags>@smoke</cucumber.filter.tags>
+            </properties>
         </profile>
-
-        <!-- Regression Test Profili -->
         <profile>
             <id>Regression</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M1</version>
-                        <configuration>
-
-                            <includes>
-                                <include>**/runners/TestRunnerBillPaySteps.java</include>
-                                <include>**/runners/TestRunnerLoginSteps.java</include>
-                                <include>**/runners/TestRunnerRegisterSteps.java</include>
-                            </includes>
-
-                            <systemPropertyVariables>
-                                <cucumber.plugin>pretty, html:target/cucumber-regression-report.html</cucumber.plugin>
-                            </systemPropertyVariables>
-
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <cucumber.filter.tags>not @disabled</cucumber.filter.tags>
+            </properties>
         </profile>
     </profiles>
-
 </project>

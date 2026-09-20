@@ -1,0 +1,27 @@
+name: Build and browser smoke
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Compile every module and run isolated browser smoke
+        run: bash mvnw -B -ntp clean verify -Dtest=DriverSmokeTest -Dsurefire.failIfNoSpecifiedTests=false
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-reports
+          path: '**/target/surefire-reports/'
+          if-no-files-found: warn

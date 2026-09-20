@@ -17,9 +17,14 @@ import java.util.List;
 
 
 public class RegistrationAndOrderTests extends BaseDriver {
-    JavascriptExecutor js = (JavascriptExecutor) driver;
+    JavascriptExecutor js;
     Faker randomGenerator = new Faker();
-    Actions actions = new Actions(driver);
+    Actions actions;
+    @org.testng.annotations.BeforeClass
+    public void initializeActions() {
+        actions = new Actions(driver);
+        js = (JavascriptExecutor) driver;
+    }
     String password = "password";
     String randomEmail;
     String randomName;
@@ -29,7 +34,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test(priority = 1)
     public void registerTest() {
 
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
 
         randomName = randomGenerator.name().firstName();
         randomSurname = randomGenerator.name().lastName();
@@ -69,7 +74,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test(dependsOnMethods = "registerTest", priority = 2)
     public void registerTestNegative() {
 
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
         WebElement registerButton = driver.findElement(By.linkText("Register"));
 
         Action action = actions.moveToElement(registerButton).click().build();
@@ -101,7 +106,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test(dependsOnMethods = "registerTest", priority = 3)
     public void loginTest() {
 
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
 
         WebElement loginButton = driver.findElement(By.linkText("Log in"));
         action = actions
@@ -133,7 +138,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test(dependsOnMethods = "registerTest", priority = 4)
     public void loginTestNegative() {
 
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
 
         WebElement loginButton = driver.findElement(By.xpath("//a[text()='Log in']"));
         action = actions
@@ -164,7 +169,7 @@ public class RegistrationAndOrderTests extends BaseDriver {
     @Test(dependsOnMethods = "registerTest", priority = 5)
     public void orderTest() {
 
-        driver.get("http://demowebshop.tricentis.com/");
+        driver.get(System.getProperty("demowebshop.url", "https://demowebshop.tricentis.com/"));
 
         WebElement loginButton = driver.findElement(By.linkText("Log in"));
         action = actions
@@ -187,6 +192,8 @@ public class RegistrationAndOrderTests extends BaseDriver {
                 .build();
 
         action.perform();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Log out")));
 
         WebElement computersBigPunto = driver.findElement(By.linkText("COMPUTERS"));
 
@@ -236,31 +243,20 @@ public class RegistrationAndOrderTests extends BaseDriver {
         Select country = new Select(countrySelectMenu);
         country.selectByVisibleText("United States");
 
-        action = actions
-                .sendKeys(Keys.TAB)
-                .sendKeys(Keys.TAB)
-                .sendKeys(randomGenerator.address().city())
-                .sendKeys(Keys.TAB)
-                .sendKeys(randomGenerator.address().fullAddress())
-                .sendKeys(Keys.TAB)
-                .sendKeys(Keys.TAB)
-                .sendKeys(randomGenerator.address().countryCode())
-                .sendKeys(Keys.TAB)
-                .sendKeys(randomGenerator.phoneNumber().cellPhone())
-                .sendKeys(Keys.TAB)
-                .sendKeys(Keys.TAB)
-                .sendKeys(Keys.ENTER)
-                .build();
-        action.perform();
+        driver.findElement(By.id("BillingNewAddress_City")).sendKeys("Oslo");
+        driver.findElement(By.id("BillingNewAddress_Address1")).sendKeys("Test Street 12");
+        driver.findElement(By.id("BillingNewAddress_ZipPostalCode")).sendKeys("10001");
+        driver.findElement(By.id("BillingNewAddress_PhoneNumber")).sendKeys("2025550123");
+        driver.findElement(By.cssSelector("#billing-buttons-container input")).click();
 
         WebElement continue2 = driver.findElement(By.xpath("(//input[@title='Continue'])[2]"));
-        continue2.click();
+        wait.until(ExpectedConditions.elementToBeClickable(continue2)).click();
 
         WebElement continue3 = driver.findElement(By.xpath("//input[@onclick='ShippingMethod.save()']"));
-        continue3.click();
+        wait.until(ExpectedConditions.elementToBeClickable(continue3)).click();
 
         WebElement continue4 = driver.findElement(By.xpath("//input[@onclick='PaymentMethod.save()']"));
-        continue4.click();
+        wait.until(ExpectedConditions.elementToBeClickable(continue4)).click();
 
         WebElement continue5 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@onclick='PaymentInfo.save()']")));
         continue5.click();
@@ -272,6 +268,6 @@ public class RegistrationAndOrderTests extends BaseDriver {
         WebElement confirmationText = driver.findElement(By.xpath("//strong[text()='Your order has been successfully processed!']"));
         Assert.assertEquals(confirmationText.getText(), "Your order has been successfully processed!", "Order successful");
 
-        waitAndClose();
+
     }
 }

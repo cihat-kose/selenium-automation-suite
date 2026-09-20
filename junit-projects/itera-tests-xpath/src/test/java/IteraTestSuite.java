@@ -5,14 +5,14 @@ import org.openqa.selenium.WebElement;
 import utility.BaseDriver;
 
 public class IteraTestSuite extends BaseDriver {
+    private final String usernameRandom = "suite" + java.util.UUID.randomUUID().toString().replace("-", "");
 
     @Test
     public void shouldRegisterSuccessfully() {
 
-        driver.get("https://itera-qa.azurewebsites.net/");
+        driver.get(System.getProperty("itera.url", "https://itera-qa.azurewebsites.net/"));
 
         String emailRandom = "testing" + (int)(Math.random() * 10000) + "@testing.com";
-        String usernameRandom = "tester" + (int)(Math.random() * 10000);
 
         WebElement signUp = driver.findElement(By.xpath("//a[text()='Sign Up']"));
         signUp.click();
@@ -49,14 +49,15 @@ public class IteraTestSuite extends BaseDriver {
 
     @Test
     public void shouldLoginSuccessfully() {
+        shouldRegisterSuccessfully();
 
-        driver.get("https://itera-qa.azurewebsites.net/");
+        driver.get(System.getProperty("itera.url", "https://itera-qa.azurewebsites.net/"));
 
         WebElement login = driver.findElement(By.xpath("//a[text()='Login']"));
         login.click();
 
         WebElement username = driver.findElement(By.xpath("//input[@data-val-required='Please enter username']"));
-        username.sendKeys("k.yigit");
+        username.sendKeys(usernameRandom);
 
         WebElement password = driver.findElement(By.xpath("//input[@data-val-required='Please enter password']"));
         password.sendKeys("123456");
@@ -64,9 +65,9 @@ public class IteraTestSuite extends BaseDriver {
         WebElement loginButton = driver.findElement(By.xpath("//input[@name='login']"));
         loginButton.click();
 
-        WebElement confirmation = driver.findElement(By.xpath("//h3[text()='Welcome k.yigit']"));
+        WebElement confirmation = driver.findElement(By.xpath("//h3[starts-with(normalize-space(), 'Welcome')]"));
 
-        Assertions.assertEquals("Welcome k.yigit", confirmation.getText(), "Login was not successful.");
+        Assertions.assertEquals("Welcome " + usernameRandom, confirmation.getText(), "Login was not successful.");
 
         WebElement logoutButton = driver.findElement(By.xpath("//a[text()='Log out']"));
         logoutButton.click();
@@ -74,14 +75,15 @@ public class IteraTestSuite extends BaseDriver {
 
     @Test
     public void shouldCreateNewCustomer() {
+        shouldRegisterSuccessfully();
 
-        driver.get("https://itera-qa.azurewebsites.net/");
+        driver.get(System.getProperty("itera.url", "https://itera-qa.azurewebsites.net/"));
 
         WebElement login = driver.findElement(By.xpath("//a[text()='Login']"));
         login.click();
 
         WebElement username = driver.findElement(By.xpath("//input[@data-val-required='Please enter username']"));
-        username.sendKeys("k.yigit");
+        username.sendKeys(usernameRandom);
 
         WebElement password = driver.findElement(By.xpath("//input[@data-val-required='Please enter password']"));
         password.sendKeys("123456");
@@ -112,7 +114,8 @@ public class IteraTestSuite extends BaseDriver {
 
         WebElement createButton2 = driver.findElement(By.xpath("//input[@value='Create']"));
         createButton2.click();
+        Assertions.assertFalse(driver.findElements(By.xpath("//td[normalize-space()='Said']")).isEmpty(), "Created customer should appear in the list");
 
-        waitAndClose();
+
     }
 }

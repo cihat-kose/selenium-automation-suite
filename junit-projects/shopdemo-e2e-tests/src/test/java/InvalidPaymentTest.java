@@ -11,7 +11,7 @@ public class InvalidPaymentTest extends BaseDriver {
 
     @Test
     public void verifyInvalidPaymentDetails() {
-        driver.get("https://shopdemo.e-junkie.com/");
+        driver.get(System.getProperty("shopdemo.url", "https://shopdemo.e-junkie.com/"));
 
         WebElement eBook = driver.findElement(By.linkText("Ebook"));
         eBook.click();
@@ -31,6 +31,6 @@ public class InvalidPaymentTest extends BaseDriver {
         WebElement errorMsg = driver.findElement(By.xpath("//span[text()='Invalid Email']"));
         assertTrue(errorMsg.getText().contains("Invalid Email"));
 
-        waitAndClose();
+
     }
 }

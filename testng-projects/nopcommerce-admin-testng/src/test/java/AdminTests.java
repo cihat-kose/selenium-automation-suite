@@ -1,6 +1,4 @@
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,8 +12,10 @@ public class AdminTests extends BaseDriverParameter {
     @Test(priority = 1)
     public void loginTest() {
         AdminPageElements page = new AdminPageElements(driver);
-        driver.get("https://admin-demo.nopcommerce.com/login?");
+        driver.get(System.getProperty("nopcommerce.url", "https://admin-demo.nopcommerce.com/login?"));
 
+        Assert.assertFalse(driver.getTitle().contains("Just a moment"),
+                "Public demo is behind an anti-bot challenge. Set -Dnopcommerce.url to an authorized test environment.");
         page.emailInput.clear();
         page.emailInput.sendKeys("admin@yourstore.com");
 
@@ -32,32 +32,30 @@ public class AdminTests extends BaseDriverParameter {
         AdminPageElements page = new AdminPageElements(driver);
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        for (int i = 1; i < page.navMenu.size(); i++) {
-            wait.until(ExpectedConditions.visibilityOfAllElements(page.navMenu));
-            js.executeScript("arguments[0].scrollIntoView(true);", page.navMenu.get(i));
-            page.navMenu.get(i).click();
-            Assert.assertTrue(page.navAltMenu.get(i).isDisplayed(), "Sub-menu not visible!");
+        java.util.List<org.openqa.selenium.WebElement> menus = driver.findElements(
+                org.openqa.selenium.By.cssSelector(".nav-sidebar > li > a[href='#']"));
+        Assert.assertFalse(menus.isEmpty(), "No expandable navigation menus found");
+        for (org.openqa.selenium.WebElement menu : menus) {
+            js.executeScript("arguments[0].scrollIntoView({block:'center'});", menu);
+            menu.click();
+            org.openqa.selenium.WebElement submenu = menu.findElement(org.openqa.selenium.By.xpath("following-sibling::ul"));
+            wait.until(ExpectedConditions.visibilityOf(submenu));
+            Assert.assertTrue(submenu.isDisplayed(), "Sub-menu not visible!");
         }
     }
 
     @Test(priority = 3, dependsOnMethods = "loginTest")
     public void createCustomer() {
         AdminPageElements page = new AdminPageElements(driver);
-        Actions actions = new Actions(driver);
-        randomMail = "testuser" + (int) (Math.random() * 10000) + "@email.com";
+        randomMail = "testuser" + java.util.UUID.randomUUID() + "@email.com";
 
-        page.customersMenu.click();
+        driver.get(java.net.URI.create(driver.getCurrentUrl()).resolve("/Admin/Customer/List").toString());
         page.addNewButton.click();
 
-        actions.click(page.searchEmail)
-                .sendKeys(randomMail)
-                .sendKeys(Keys.TAB)
-                .sendKeys("password")
-                .sendKeys(Keys.TAB)
-                .sendKeys("First name")
-                .sendKeys(Keys.TAB)
-                .sendKeys("Last name")
-                .perform();
+        driver.findElement(org.openqa.selenium.By.id("Email")).sendKeys(randomMail);
+        driver.findElement(org.openqa.selenium.By.id("Password")).sendKeys("DemoPassword123!");
+        driver.findElement(org.openqa.selenium.By.id("FirstName")).sendKeys("Automation");
+        driver.findElement(org.openqa.selenium.By.id("LastName")).sendKeys("Suite");
 
         page.saveButton.click();
         Assert.assertTrue(page.successMessage.isDisplayed(), "Customer creation failed!");

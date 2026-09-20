@@ -101,6 +101,6 @@ public class Locaters extends Parent {
             case "billConfirmPayMessage":
                 return billConfirmPayMessage;
         }
-        return null;
+        throw new IllegalArgumentException("Unknown field: " + strButton);
     }
 }
