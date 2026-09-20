@@ -6,14 +6,14 @@
 
 Reusable Selenium browser setup, page objects, explicit waits and test lifecycle utilities are demonstrated across JUnit 5, TestNG and Cucumber. The repository contains runnable examples against public demo applications, plus an isolated browser smoke test that works without any external application account.
 
-[![Build and browser smoke](https://img.shields.io/github/actions/workflow/status/cihat-kose/selenium-automation-suite/ci.yml?branch=master&label=build&logo=github)](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml)
-[![Java](https://img.shields.io/badge/Java-21%2B-ED8B00?logo=openjdk&logoColor=white)](https://adoptium.net/)
-[![Selenium](https://img.shields.io/badge/Selenium-4.49-43B02A?logo=selenium&logoColor=white)](https://www.selenium.dev/)
-[![JUnit 5](https://img.shields.io/badge/JUnit-5-25A162?logo=junit5&logoColor=white)](https://junit.org/junit5/)
-[![TestNG](https://img.shields.io/badge/TestNG-7.10-FF7300)](https://testng.org/)
-[![Cucumber](https://img.shields.io/badge/Cucumber-7-23D96C?logo=cucumber&logoColor=white)](https://cucumber.io/)
-[![Maven](https://img.shields.io/badge/Maven-Wrapper-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org/wrapper/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Build](https://img.shields.io/github/actions/workflow/status/cihat-kose/selenium-automation-suite/ci.yml?branch=master&label=Build&style=for-the-badge&logo=github)](https://github.com/cihat-kose/selenium-automation-suite/actions/workflows/ci.yml)
+[![Cucumber](https://img.shields.io/badge/Cucumber-23D96C?style=for-the-badge&logo=cucumber&logoColor=white)](https://cucumber.io/)
+[![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white)](https://www.selenium.dev/)
+[![TestNG](https://img.shields.io/badge/TestNG-FF7300?style=for-the-badge&logo=testng&logoColor=white)](https://testng.org/)
+[![JUnit](https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org/junit5/)
+[![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 </div>
 
