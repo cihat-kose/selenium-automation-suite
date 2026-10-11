@@ -2,6 +2,13 @@
 
 # Selenium Automation Suite
 
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-WebDriver-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
+![JUnit](https://img.shields.io/badge/JUnit-5-25A162?style=for-the-badge&logo=junit5&logoColor=white)
+![TestNG](https://img.shields.io/badge/TestNG-Framework-EF4036?style=for-the-badge)
+![Cucumber](https://img.shields.io/badge/Cucumber-BDD-23D96C?style=for-the-badge&logo=cucumber&logoColor=white)
+![GitHub last commit](https://img.shields.io/github/last-commit/cihat-kose/selenium-automation-suite?style=for-the-badge)
+
 **A modular Java framework for reliable web UI and end-to-end test automation.**
 
 Reusable Selenium browser setup, page objects, explicit waits and test lifecycle utilities are demonstrated across JUnit 5, TestNG and Cucumber. The repository contains runnable examples against public demo applications, plus an isolated browser smoke test that works without any external application account.
